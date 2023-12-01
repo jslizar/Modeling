@@ -1,0 +1,35 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+# Load your dataset into a pandas DataFrame
+# Replace 'your_dataset.csv' with the actual file path or URL of your dataset
+df = pd.read_csv('your_dataset.csv')
+
+# List of variable names (columns) in your dataset
+# You can customize this list based on the variables you want to include in the regression testing
+selected_variables = ['variable1', 'variable2', 'variable3', ...]
+
+# Select only the columns specified in selected_variables
+df_selected = df[selected_variables]
+
+# Specify the target variable for regression testing
+# Replace 'target_variable' with the actual target variable name
+target_variable = 'target_variable'
+
+# Separate features (X) and target variable (y)
+X = df_selected.drop(target_variable, axis=1)
+y = df_selected[target_variable]
+
+# Split the dataset into training and holdout sets
+test_size = 0.2  # You can adjust this ratio based on your preference
+X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, test_size=test_size, random_state=42)
+
+# Create DataFrames for the training and holdout sets
+df_train = pd.concat([X_train, y_train], axis=1)
+df_holdout = pd.concat([X_holdout, y_holdout], axis=1)
+
+# Save the training and holdout sets to separate Excel files
+df_train.to_excel('training_set.xlsx', index=False)
+df_holdout.to_excel('holdout_set.xlsx', index=False)
+
+print("Training and holdout sets have been saved to 'training_set.xlsx' and 'holdout_set.xlsx'.")
